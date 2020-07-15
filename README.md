@@ -1,1 +1,1 @@
-# covid19_japan
+A simple python program to get information from NHK japan.
