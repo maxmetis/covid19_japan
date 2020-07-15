@@ -48,7 +48,7 @@ def lineNotifyMessage(token, msg):
    return r.status_code
 	
 message = '\n' + '全國確診人數總計：' + infected + '人' + '\n' + '昨日全國新增確診：' + add + '人' + '\n' + '昨日東京新增確診：' + data_tk + '人'
-token = 'gbgKCtsfluJwk8UdzRLtI2F2Mn0y0jsNuVewBHA3JO7'
+token = 'please input Line notify token'
 
 lineNotifyMessage(token, message)
 
