@@ -57,7 +57,6 @@ def lineNotifyMessage(token, msg, picURI):
 	
 message = '\n' + '全國確診人數總計：' + infected + '; \n' + '昨日新增請參閱下圖：'
 token = ['*******']
-
-picURI ='C:/Users/ultsai/Desktop/PYTHON/IMG/' + link_img[5]
+picURI ='C:*****/IMG/'
 
 lineNotifyMessage(token, message, picURI)
