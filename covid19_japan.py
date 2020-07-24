@@ -38,19 +38,13 @@ link_img = soup_img.select('.c-slideimage figure img')[0].get('src').split('/')
 
 link = 'https://www3.nhk.or.jp/news/special/coronavirus/still/' + link_img[5]
 
-
-#local = os.path.join('C:/Users/ultsai/Desktop/PYTHON/IMG/' + link_img[5])
-#urlretrieve(link, local)
-
 response = requests.get(link)
 image = Image.open(BytesIO(response.content))
 image.save('C:/Users/ultsai/Desktop/PYTHON/IMG/' + link_img[5])
 
-#LINE NOTIFY
-
 infected = format(int(data[0]),',')
 
-
+#LINE NOTIFY
 def lineNotifyMessage(token, msg, picURI):
    headers = {
        "Authorization": "Bearer " + token, 
@@ -62,7 +56,7 @@ def lineNotifyMessage(token, msg, picURI):
    return r.status_code
 	
 message = '\n' + '全國確診人數總計：' + infected + '; \n' + '昨日新增請參閱下圖：'
-token = ['gbgKCtsfluJwk8UdzRLtI2F2Mn0y0jsNuVewBHA3JO7', 'TiW7NS7VTXqUEBQ8PP28RhaKPsfgl50qGhLmq6Uq0rJ']
+token = ['*******']
 
 picURI ='C:/Users/ultsai/Desktop/PYTHON/IMG/' + link_img[5]
 
