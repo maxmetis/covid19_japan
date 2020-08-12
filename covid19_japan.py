@@ -7,10 +7,8 @@ Created on Tue Jul 14 09:26:38 2020
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
-import time
 import requests
-from PIL import Image
-from io import BytesIO
+
 
 url = 'https://www3.nhk.or.jp/news/special/coronavirus/data-all/'
 driver = webdriver.Chrome(executable_path='./chromedriver')
@@ -20,43 +18,36 @@ html_source = driver.page_source
 driver.quit()
     
 soup = BeautifulSoup(html_source, 'lxml')
-data = soup.find_all('td')[0].text.replace('\n','').replace('万','').replace('          前日比 ','').replace('人','').rstrip()
+data = soup.find('td', class_='tbody-td-infection-total').text.replace('\n','').replace('          前日比','').replace('人','').strip()
 data = data.split('+', 1)
+infected_total = data[0].strip().split('万', 1)
+infected_yesterday = data[1]
 
-time.sleep(1)
-
-img_url = 'https://www3.nhk.or.jp/news/special/coronavirus/data/'
-
-driver = webdriver.Chrome(executable_path='./chromedriver')
-driver.implicitly_wait(20)
-driver.get(url = img_url)
-html_source_img = driver.page_source
-driver.quit()
-
-soup_img = BeautifulSoup(html_source_img, 'lxml')
-link_img = soup_img.select('.c-slideimage figure img')[0].get('src').split('/')
-
-link = 'https://www3.nhk.or.jp/news/special/coronavirus/still/' + link_img[5]
-
-response = requests.get(link)
-image = Image.open(BytesIO(response.content))
-image.save('C:/Users/ultsai/Desktop/PYTHON/IMG/' + link_img[5])
-
-infected = format(int(data[0]),',')
+if len(infected_total[1]) <= (len(infected_total[0])+2):
+    infected_total = infected_total[0] + '0' * (4-len(infected_total[1])) + infected_total[1]
+    
+else:
+    infected_total = infected_total[0] + infected_total[1]
+    
+infected_total = format(int(infected_total),',')
+infected_yesterday = format(int(infected_yesterday),',')
 
 #LINE NOTIFY
-def lineNotifyMessage(token, msg, picURI):
+def lineNotifyMessage(token, msg):
    headers = {
        "Authorization": "Bearer " + token, 
    }
 	
    payload = {'message': msg}
-   files = {'imageFile': open(picURI, 'rb')}
-   r = requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload, files = files)
+   r = requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
    return r.status_code
 	
-message = '\n' + '全國確診人數總計：' + infected + '; \n' + '昨日新增請參閱下圖：'
-token = ['*******']
-picURI ='C:*****/IMG/'
+message = '\n' + '全國確診人數總計：' + infected_total + ' 😷 \n' + '昨日新增確診人數：' + infected_yesterday + ' 😷 \n' + 'https://www3.nhk.or.jp/news/special/coronavirus/data/'
+token_G2 = 'gbgKCtsfluJwk8UdzRLtI2F2Mn0y0jsNuVewBHA3JO7'
+token_TMC = 'TiW7NS7VTXqUEBQ8PP28RhaKPsfgl50qGhLmq6Uq0rJ'
+token_MMC = 'KX8PDm61176Ll5QlILOxa88yLHd5lCsgQ9TvyPhjSmN'
+#token_test = 'yfOAGBNnJXNoT57I9MM2aY9YgRKv9z1faDU1bbS2Ror'
 
-lineNotifyMessage(token, message, picURI)
+lineNotifyMessage(token_G2, message)
+lineNotifyMessage(token_TMC, message)
+lineNotifyMessage(token_MMC, message)
