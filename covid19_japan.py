@@ -41,13 +41,9 @@ def lineNotifyMessage(token, msg):
    payload = {'message': msg}
    r = requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
    return r.status_code
-	
-message = '\n' + '全國確診人數總計：' + infected_total + ' 😷 \n' + '昨日新增確診人數：' + infected_yesterday + ' 😷 \n' + 'https://www3.nhk.or.jp/news/special/coronavirus/data/'
-token_G2 = 'gbgKCtsfluJwk8UdzRLtI2F2Mn0y0jsNuVewBHA3JO7'
-token_TMC = 'TiW7NS7VTXqUEBQ8PP28RhaKPsfgl50qGhLmq6Uq0rJ'
-token_MMC = 'KX8PDm61176Ll5QlILOxa88yLHd5lCsgQ9TvyPhjSmN'
-#token_test = 'yfOAGBNnJXNoT57I9MM2aY9YgRKv9z1faDU1bbS2Ror'
 
-lineNotifyMessage(token_G2, message)
-lineNotifyMessage(token_TMC, message)
-lineNotifyMessage(token_MMC, message)
+link = 'https://www3.nhk.or.jp/news/special/coronavirus/data/'
+token = 'add your token'	
+message = '\n' + '全國確診人數總計：' + infected_total + ' 😷 \n' + '昨日新增確診人數：' + infected_yesterday + ' 😷 \n' + link
+
+lineNotifyMessage(token, message)
